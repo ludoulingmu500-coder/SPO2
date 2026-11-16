@@ -19,3 +19,30 @@ def set_guild_channel(guild_id, key, channel_id):
             f"ON CONFLICT(guild_id) DO UPDATE SET {key}=excluded.{key}",
             (str(guild_id), int(channel_id)),
         )
+
+
+
+def get_excluded_channels(guild_id):
+    with sqlite3.connect(DB_NAME) as conn:
+        rows = conn.execute(
+            "SELECT channel_id FROM guild_excluded_channels WHERE guild_id=? ORDER BY channel_id",
+            (str(guild_id),),
+        ).fetchall()
+    return {int(row[0]) for row in rows}
+
+
+def add_excluded_channel(guild_id, channel_id):
+    with sqlite3.connect(DB_NAME) as conn:
+        conn.execute(
+            "INSERT OR IGNORE INTO guild_excluded_channels(guild_id, channel_id) VALUES(?, ?)",
+            (str(guild_id), int(channel_id)),
+        )
+
+
+def remove_excluded_channel(guild_id, channel_id):
+    with sqlite3.connect(DB_NAME) as conn:
+        cur = conn.execute(
+            "DELETE FROM guild_excluded_channels WHERE guild_id=? AND channel_id=?",
+            (str(guild_id), int(channel_id)),
+        )
+        return cur.rowcount > 0

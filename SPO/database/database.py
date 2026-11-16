@@ -59,3 +59,9 @@ def init_db():
             last_decay_at REAL NOT NULL,
             PRIMARY KEY(guild_id, user_id)
         )""")
+
+        cur.execute("""CREATE TABLE IF NOT EXISTS guild_excluded_channels (
+            guild_id TEXT NOT NULL,
+            channel_id INTEGER NOT NULL,
+            PRIMARY KEY(guild_id, channel_id)
+        )""")
