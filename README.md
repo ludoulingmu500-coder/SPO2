@@ -15,7 +15,7 @@ server-specific blacklists, whitelists, cumulative scores, and logs.**\
 **[Discord
 Bot招待リンク](https://discord.com/oauth2/authorize?client_id=1559773897535266957&permissions=1099511704582&integration_type=0&scope=bot)**
 
-https://discord.com/oauth2/authorize?client_id=1559773897535266957&permissions=1099511704582&integration_type=0&scope=bot
+
 
 Botの導入と設定には、対象サーバーで必要な管理権限が必要です。
 
@@ -144,7 +144,7 @@ Portalで再発行してください。
 **[Discord Bot invitation
 link](https://discord.com/oauth2/authorize?client_id=1559773897535266957&permissions=1099511704582&integration_type=0&scope=bot)**
 
-https://discord.com/oauth2/authorize?client_id=1559773897535266957&permissions=1099511704582&integration_type=0&scope=bot
+
 
 You need the appropriate permissions in the target server to invite and
 configure the bot.
