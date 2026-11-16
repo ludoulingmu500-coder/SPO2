@@ -15,6 +15,7 @@ server-specific blacklists, whitelists, cumulative scores, and logs.**\
 **[Discord
 Bot招待リンク](https://discord.com/oauth2/authorize?client_id=1559773897535266957&permissions=1099511704582&integration_type=0&scope=bot)**
 
+https://discord.com/oauth2/authorize?client_id=1559773897535266957&permissions=1099511704582&integration_type=0&scope=bot
 
 Botの導入と設定には、対象サーバーで必要な管理権限が必要です。
 
@@ -51,13 +52,42 @@ Botを招待後、以下の3種類のテキストチャンネルを用意し、�
 -   **ブラックリスト**：設定したブラックリストチャンネルへ、対象のユーザーIDや検知したい文字列を投稿します。
 -   **ホワイトリスト**：設定したホワイトリストチャンネルへ、ドメイン名（例：`example.com`）を投稿します。URL全体ではなくドメイン名を登録してください。
 
+### 監視対象外チャンネルの設定（除外設定）
+
+サーバー管理者は、指定したチャンネルを通常の監視対象から除外できます。複数チャンネルをまとめて指定できます。
+
+``` text
+!spo exclude #お知らせ #ブラックリスト
+```
+
+現在の除外設定を確認するには、次のコマンドを使用します。
+
+``` text
+!spo excluded
+```
+
+除外したチャンネルを再び監視対象に戻すには、次のコマンドを使用します。
+
+``` text
+!spo include #お知らせ
+```
+
+-   `!spo exclude`：指定チャンネルを監視対象外にします。
+-   `!spo excluded`：現在、監視対象外になっているチャンネルを表示します。
+-   `!spo include`：指定チャンネルを監視対象に戻します。
+-   チャンネルは `#チャンネル名`
+    のメンション、または正確なチャンネル名で指定できます。
+-   これらのコマンドはサーバー管理者のみ実行できます。
+-   除外設定はサーバーごとに保存され、Bot再起動後も維持されます。
+-   除外したチャンネルと、その配下のスレッドは通常メッセージの監視対象外になります。
+
 ### 検知スコア
 
-  条件                                                      加点
+  条件                                                 加点
   ----------------------------------------------- --------------
-  同一ユーザーが10秒以内に5件以上投稿                        +50
-  同一ユーザーが10秒以内に同一内容を3件以上投稿              +50
-  ホワイトリストにないURLのドメイン                 URLごとに+20
+  同一ユーザーが10秒以内に5件以上投稿                  +50
+  同一ユーザーが10秒以内に同一内容を3件以上投稿        +50
+  ホワイトリストにないURLのドメイン                URLごとに+20
 
 検知ポイントはサーバー・ユーザーごとに累積します。7日経過するごとに10ポイント減算し、合計100ポイント以上で制裁を実行します。ブラックリスト一致時は、このスコア判定とは別に処理されます。
 
@@ -114,6 +144,7 @@ Portalで再発行してください。
 **[Discord Bot invitation
 link](https://discord.com/oauth2/authorize?client_id=1559773897535266957&permissions=1099511704582&integration_type=0&scope=bot)**
 
+https://discord.com/oauth2/authorize?client_id=1559773897535266957&permissions=1099511704582&integration_type=0&scope=bot
 
 You need the appropriate permissions in the target server to invite and
 configure the bot.
@@ -172,21 +203,54 @@ the registration channels to trusted administrators.
     the configured whitelist channel. Register the domain name, not the
     full URL.
 
+### Excluding channels from monitoring
+
+Server administrators can exclude selected channels from normal message
+monitoring. Multiple channels can be specified in one command.
+
+``` text
+!spo exclude #announcements #blacklist
+```
+
+To display the current exclusion list:
+
+``` text
+!spo excluded
+```
+
+To include an excluded channel in monitoring again:
+
+``` text
+!spo include #announcements
+```
+
+-   `!spo exclude`: Excludes the specified channels from monitoring.
+-   `!spo excluded`: Displays the channels currently excluded from
+    monitoring.
+-   `!spo include`: Adds the specified channels back to monitoring.
+-   Specify channels by mentioning them (for example, `#channel-name`)
+    or by using their exact channel names.
+-   These commands are restricted to server administrators.
+-   Exclusion settings are stored per server and persist after the bot
+    restarts.
+-   Excluded channels and threads under those channels are excluded from
+    normal message monitoring.
+
 ### Detection scores
 
-  -----------------------------------------------------------------------
-  Condition                                                Score increase
-  ------------------------------ ----------------------------------------
-  Same user posts 5 or more                                           +50
-  messages within 10 seconds     
+  ---------------------------------------------------------------------
+  Condition                                              Score increase
+  ----------------------------- ---------------------------------------
+  Same user posts 5 or more                                         +50
+  messages within 10 seconds    
 
-  Same user posts identical                                           +50
-  content 3 or more times within 
-  10 seconds                     
+  Same user posts identical                                         +50
+  content 3 or more times       
+  within 10 seconds             
 
-  Domain in a URL is not on the                               +20 per URL
-  whitelist                      
-  -----------------------------------------------------------------------
+  Domain in a URL is not on the                             +20 per URL
+  whitelist                     
+  ---------------------------------------------------------------------
 
 Detection points accumulate per server and user. 10 points are deducted
 for every 7-day period. Moderation is triggered when the total score
